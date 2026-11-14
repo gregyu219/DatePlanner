@@ -4,7 +4,6 @@ Returns real places (name, coordinates, opening_hours, website, cuisine) of the
 requested categories around a point. Results are cached in SQLite.
 """
 
-import math
 import re
 
 import httpx
@@ -12,6 +11,7 @@ import httpx
 from app.config import Settings
 from app.db import Database
 from app.models import Place, TransportMode
+from app.planner.geo import haversine_m
 from app.planner.http import cache_key, http_client, request_json
 
 CACHE_NAMESPACE = "overpass"
@@ -121,7 +121,7 @@ async def find_places(
         if place is None or place.id in seen:
             continue
         seen.add(place.id)
-        by_category[place.category].append((_distance_m(lat, lon, place.lat, place.lon), place))
+        by_category[place.category].append((haversine_m(lat, lon, place.lat, place.lon), place))
 
     results: list[Place] = []
     for category in categories:
@@ -186,10 +186,3 @@ def _address(tags: dict) -> str | None:
     parts = [p for p in (street, tags.get("addr:city")) if p]
     return ", ".join(parts) or None
 
-
-def _distance_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    r = 6371000.0
-    p1, p2 = math.radians(lat1), math.radians(lat2)
-    dp, dl = p2 - p1, math.radians(lon2 - lon1)
-    h = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
-    return 2 * r * math.asin(math.sqrt(h))
