@@ -38,6 +38,11 @@ CREATE TABLE IF NOT EXISTS messages (
     created_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS messages_date_id ON messages(date_id);
+CREATE TABLE IF NOT EXISTS intake (
+    date_id INTEGER PRIMARY KEY REFERENCES dates(id) ON DELETE CASCADE,
+    state_json TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS cache (
     namespace TEXT NOT NULL,
     key TEXT NOT NULL,
@@ -162,6 +167,23 @@ class Database:
                 (date_id,),
             ).fetchall()
         return [ChatMessage(**dict(r)) for r in rows]
+
+    # --- opening chat progress --------------------------------------------
+
+    def get_intake_state(self, date_id: int) -> dict | None:
+        """The opening chat's saved progress (app.intake.IntakeState as a dict)."""
+        with self.connect() as conn:
+            row = conn.execute(
+                "SELECT state_json FROM intake WHERE date_id = ?", (date_id,)
+            ).fetchone()
+        return json.loads(row["state_json"]) if row else None
+
+    def set_intake_state(self, date_id: int, state: dict) -> None:
+        with self.connect() as conn:
+            conn.execute(
+                "INSERT OR REPLACE INTO intake (date_id, state_json, updated_at) VALUES (?, ?, ?)",
+                (date_id, json.dumps(state), _now().isoformat()),
+            )
 
     # --- cache for external services --------------------------------------
 

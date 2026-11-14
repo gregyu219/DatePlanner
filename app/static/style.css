@@ -13,3 +13,81 @@ body {
   margin: 0 auto;
   padding: 1.5rem;
 }
+
+button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border: 1px solid #c2185b;
+  border-radius: 6px;
+  background: #c2185b;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Opening chat */
+.chat {
+  max-width: 640px;
+}
+
+.chat h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.message {
+  max-width: 80%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  white-space: pre-line;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: #c2185b;
+  color: #fff;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.8rem 0;
+}
+
+.options button {
+  background: #fff;
+  color: #c2185b;
+}
+
+.chat-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chat-form input {
+  flex: 1;
+  font: inherit;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
