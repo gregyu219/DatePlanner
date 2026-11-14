@@ -87,6 +87,14 @@ def test_messages_are_kept_in_order_per_date(db):
     ]
 
 
+def test_intake_state_get_and_set(db):
+    record = db.create_date()
+    assert db.get_intake_state(record.id) is None
+    db.set_intake_state(record.id, {"step": "start"})
+    db.set_intake_state(record.id, {"step": "transport"})
+    assert db.get_intake_state(record.id) == {"step": "transport"}
+
+
 def test_cache_get_and_set(db):
     assert db.cache_get("nominatim", "union square") is None
     db.cache_set("nominatim", "union square", [{"lat": "37.7", "lon": "-122.4"}])

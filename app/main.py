@@ -9,6 +9,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+from app.chat_routes import router as chat_router
 from app.config import Settings, get_settings
 from app.db import Database
 
@@ -28,6 +29,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = settings
     app.state.db = Database(settings.database_path)
     app.mount("/static", StaticFiles(directory=APP_DIR / "static"), name="static")
+    app.include_router(chat_router)
 
     @app.get("/", response_class=HTMLResponse)
     def index(request: Request) -> HTMLResponse:

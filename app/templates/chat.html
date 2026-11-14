@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan a date · DatePlanner</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+  <main class="container chat" data-date-id="{{ date_id }}">
+    <h1><a href="/">DatePlanner</a></h1>
+    <div id="messages" class="messages" aria-live="polite"></div>
+    <div id="options" class="options"></div>
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <input id="chat-input" name="text" maxlength="500" placeholder="Type your answer… (or &quot;back&quot;)" aria-label="Your answer" autofocus>
+      <button type="submit">Send</button>
+    </form>
+    <p id="done" class="done" hidden>
+      Planning has started. <a href="/dates/{{ date_id }}">Open the plan</a>
+    </p>
+  </main>
+  <script src="{{ url_for('static', path='chat.js') }}"></script>
+</body>
+</html>

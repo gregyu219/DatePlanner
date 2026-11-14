@@ -35,7 +35,9 @@ Then open http://127.0.0.1:8000. Data is stored in SQLite at `data/dateplanner.d
 app/
   main.py       FastAPI app (create_app), pages and API routes
   config.py     settings from env / .env
-  db.py         SQLite storage: dates, chat messages, service cache
+  db.py         SQLite storage: dates, chat messages, chat progress, service cache
+  intake.py     the opening chat's questions and answer parsing (type "back" to redo one)
+  chat_routes.py  chat page and /api/dates/{id}/chat endpoints
   models.py     shared Pydantic models (DateRequest, Place, Slot, Leg, Plan, ...)
   planner/      map services, routing, ordering, Claude helper
   templates/    HTML pages
